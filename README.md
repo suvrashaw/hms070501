@@ -1,2 +1,2 @@
-# Hospital Management System using Java, Netbeans & MySQL
+# Hospital Management System using Java (Swing), Netbeans IDE & MySQL
  
