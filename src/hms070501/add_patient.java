@@ -1,16 +1,13 @@
 package hms070501;
-import sqlcon.sqlcon;
-import java.awt.*;
-import java.sql.*;
 import javax.swing.*;
 public class add_patient extends JFrame {
     public add_patient() {
         initComponents();
-    }@SuppressWarnings("unchecked")
+    } @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        submit = new javax.swing.JButton();
+        save = new javax.swing.JButton();
         patient_id = new javax.swing.JLabel();
         patient_name = new javax.swing.JLabel();
         patient_contact = new javax.swing.JLabel();
@@ -33,15 +30,15 @@ public class add_patient extends JFrame {
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        submit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        submit.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\submit.png")); // NOI18N
-        submit.setText("Submit");
-        submit.addActionListener(new java.awt.event.ActionListener() {
+        save.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        save.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\submit.png")); // NOI18N
+        save.setText("Save");
+        save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitActionPerformed(evt);
+                saveActionPerformed(evt);
             }
         });
-        getContentPane().add(submit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
+        getContentPane().add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
 
         patient_id.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         patient_id.setText("Patient ID");
@@ -104,11 +101,11 @@ public class add_patient extends JFrame {
         getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, -1, -1));
 
         add_patient_bg.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\add new patient background.jpg")); // NOI18N
-        getContentPane().add(add_patient_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, -70, -1, -1));
+        getContentPane().add(add_patient_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         String patientID=patient_id_field.getText();
         String patientNAME=patient_name_field.getText();
         String patientNO=patient_contact_field.getText();
@@ -116,31 +113,27 @@ public class add_patient extends JFrame {
         String patientSEX=patient_id_field.getText();
         String patientBG=(String)patient_sex_select.getSelectedItem();
         String majorDISEASE=patient_illness_field.getText();
-        try{
-            Connection con=sqlcon.getCon();
-            Statement st=con.createStatement();
+        try { java.sql.Connection con=sql.conn.getCon();
+            java.sql.Statement st=con.createStatement();
             st.executeUpdate("Updste patient values('"+patientID+"','"+patientNAME+"','"+patientNO+"','"+patientAGE+"','"+patientSEX+"','"+patientBG+"','"+majorDISEASE+"')");
             JOptionPane.showMessageDialog(null,"UPDATE");
             setVisible(false);
             new add_patient().setVisible(true);
-        }
-        catch(HeadlessException | SQLException e){
+        } catch(java.sql.SQLException e) {
             JOptionPane.showMessageDialog(null,"ENTER DATA IN CORRECT FORMAT");
         }
-    }//GEN-LAST:event_submitActionPerformed
+    }//GEN-LAST:event_saveActionPerformed
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
         setVisible(false);     
     }//GEN-LAST:event_closeActionPerformed
     public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        try { for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }}} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+                }}} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(add_patient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(() -> {
+        } java.awt.EventQueue.invokeLater(() -> {
             new add_patient().setVisible(true);
         });}
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -160,6 +153,6 @@ public class add_patient extends JFrame {
     private javax.swing.JTextField patient_name_field;
     private javax.swing.JLabel patient_sex;
     private javax.swing.JComboBox<String> patient_sex_select;
-    private javax.swing.JButton submit;
+    private javax.swing.JButton save;
     // End of variables declaration//GEN-END:variables
 }

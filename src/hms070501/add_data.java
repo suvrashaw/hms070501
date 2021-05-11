@@ -1,14 +1,9 @@
 package hms070501;
-import sqlcon.sqlcon;
-import java.sql.*;
-import java.awt.*;
 import javax.swing.*;
-import net.proteanit.sql.DbUtils;
 public class add_data extends JFrame {
     public int flag=0;
     public add_data() {
         initComponents();
-        patient_id_error.setVisible(false);
         ward_type.setVisible(false);
         ward_type_select.setVisible(false);
     } @SuppressWarnings("unchecked")
@@ -18,14 +13,13 @@ public class add_data extends JFrame {
         patient_id = new javax.swing.JLabel();
         patient_id_field = new javax.swing.JTextField();
         search = new javax.swing.JButton();
-        patient_id_error = new javax.swing.JLabel();
         symptoms = new javax.swing.JLabel();
         symptoms_field = new javax.swing.JTextField();
         diagnosis_field = new javax.swing.JTextField();
         diagnosis = new javax.swing.JLabel();
         medicines_field = new javax.swing.JTextField();
         medicines = new javax.swing.JLabel();
-        submit = new javax.swing.JButton();
+        save = new javax.swing.JButton();
         close = new javax.swing.JButton();
         ward_type = new javax.swing.JLabel();
         ward_type_select = new javax.swing.JComboBox<>();
@@ -57,11 +51,6 @@ public class add_data extends JFrame {
         });
         getContentPane().add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 33, -1, -1));
 
-        patient_id_error.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
-        patient_id_error.setForeground(new java.awt.Color(0, 0, 102));
-        patient_id_error.setText("ID does not exists !!");
-        getContentPane().add(patient_id_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, -1, -1));
-
         symptoms.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         symptoms.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         symptoms.setText("Symptoms");
@@ -87,15 +76,15 @@ public class add_data extends JFrame {
         medicines.setToolTipText("");
         getContentPane().add(medicines, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 71, -1));
 
-        submit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        submit.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\submit.png")); // NOI18N
-        submit.setText("Submit");
-        submit.addActionListener(new java.awt.event.ActionListener() {
+        save.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        save.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\submit.png")); // NOI18N
+        save.setText("Save");
+        save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitActionPerformed(evt);
+                saveActionPerformed(evt);
             }
         });
-        getContentPane().add(submit, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
+        getContentPane().add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, -1, -1));
 
         close.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         close.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\close.png")); // NOI18N
@@ -132,6 +121,7 @@ public class add_data extends JFrame {
         });
         getContentPane().add(ward_select, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 170, -1));
 
+        table.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null}
@@ -150,35 +140,33 @@ public class add_data extends JFrame {
         });
         jScrollPane1.setViewportView(table);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 649, 50));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 649, 50));
 
         add_data_bg.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\add new patient background.jpg")); // NOI18N
-        getContentPane().add(add_data_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-120, -30, -1, -1));
+        getContentPane().add(add_data_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
-        if (flag==1){
-            String patientID = patient_id_field.getText();
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
+        if (flag==1){ String patientID = patient_id_field.getText();
             String SYMPToms = symptoms_field.getText();
             String DIAGnosis = diagnosis_field.getText();
             String MEDicines = medicines_field.getText();
             String Ward=(String)ward_select.getSelectedItem();
             String wardTYPE = "";
-            if(ward_select.getSelectedItem()=="Yes")wardTYPE=(String)ward_type_select.getSelectedItem();
-            try{
-                Connection con=sqlcon.getCon();
-                Statement st=con.createStatement();
+            if (ward_select.getSelectedItem()=="Yes")wardTYPE=(String)ward_type_select.getSelectedItem();
+            try { java.sql.Connection con=sql.conn.getCon();
+                java.sql.Statement st=con.createStatement();
                 st.executeQuery("Updste report values('"+patientID+"','"+SYMPToms+"','"+DIAGnosis+"','"+MEDicines+"','"+Ward+"','"+wardTYPE+"')");
                 JOptionPane.showMessageDialog(null,"UPDATE SUCCESSFUL !!");
                 setVisible(false);
                 new add_data().setVisible(true);
-            }catch(HeadlessException | SQLException e){
+            } catch(java.sql.SQLException e) {
             JOptionPane.showMessageDialog(this,e);
-            }}else{
+            }} else {
             JOptionPane.showMessageDialog(null,"EMPTY PATIENT FIELD !!");
         }
-    }//GEN-LAST:event_submitActionPerformed
+    }//GEN-LAST:event_saveActionPerformed
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
         setVisible(false);
     }//GEN-LAST:event_closeActionPerformed
@@ -186,24 +174,22 @@ public class add_data extends JFrame {
         if(ward_select.getSelectedItem()=="Yes"){
             ward_type.setVisible(true);
             ward_type_select.setVisible(true);
-        }else{
+        } else {
             ward_type.setVisible(false);
             ward_type_select.setVisible(false);
         }
     }//GEN-LAST:event_ward_selectActionPerformed
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String patientID = patient_id_field.getText();
-        try{
-            Connection con=sqlcon.getCon();
-            Statement st=con.createStatement();
-            ResultSet rs = st.executeQuery("select *from patient where patientID='"+patientID+"'");
-            table.setModel(DbUtils.resultSetToTableModel(rs));
+        try{ java.sql.Connection con=sql.conn.getCon();
+            java.sql.Statement st=con.createStatement();
+            java.sql.ResultSet rs = st.executeQuery("select *from patient where patientID='"+patientID+"'");
+            table.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
             if(rs.first()) { //INVERSEIF
-                patient_id_error.setVisible(false);
                 patient_id_field.setEditable(false);
                 flag = 1;
-            }else patient_id_error.setVisible(true);
-        }catch(SQLException e){
+            } else JOptionPane.showMessageDialog(null,"ID DOES NOT EXISTS !!");
+        } catch(java.sql.SQLException e){
             JOptionPane.showMessageDialog(null,"CONNECTION ERROR !!");
         }
     }//GEN-LAST:event_searchActionPerformed
@@ -214,9 +200,8 @@ public class add_data extends JFrame {
                     break;
                 }}} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(add_data.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }EventQueue.invokeLater(() -> {
-            new add_data().setVisible(true);
-        });}
+        } java.awt.EventQueue.invokeLater(() -> {
+            new add_data().setVisible(true);});}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_data_bg;
     private javax.swing.JButton close;
@@ -226,10 +211,9 @@ public class add_data extends JFrame {
     private javax.swing.JLabel medicines;
     private javax.swing.JTextField medicines_field;
     private javax.swing.JLabel patient_id;
-    private javax.swing.JLabel patient_id_error;
     private javax.swing.JTextField patient_id_field;
+    private javax.swing.JButton save;
     private javax.swing.JButton search;
-    private javax.swing.JButton submit;
     private javax.swing.JLabel symptoms;
     private javax.swing.JTextField symptoms_field;
     private javax.swing.JTable table;
