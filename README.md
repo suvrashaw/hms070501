@@ -1,2 +1,2 @@
-# hms070501
+# Hospital Management System using Java (Swing), Netbeans IDE & MySQL
  
