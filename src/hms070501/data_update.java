@@ -1,4 +1,5 @@
 package hms070501;
+import java.sql.*;
 import javax.swing.*;
 public class data_update extends JFrame {
     public data_update() {
@@ -24,9 +25,8 @@ public class data_update extends JFrame {
         search = new javax.swing.JButton();
         update = new javax.swing.JButton();
         patient_age_field = new javax.swing.JTextField();
-        patient_age_field2 = new javax.swing.JTextField();
-        patient_age_field3 = new javax.swing.JTextField();
         patient_sex_select = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(280, 150));
@@ -111,15 +111,12 @@ public class data_update extends JFrame {
         patient_age_field.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         getContentPane().add(patient_age_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 159, 172, -1));
 
-        patient_age_field2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        getContentPane().add(patient_age_field2, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 159, 172, -1));
-
-        patient_age_field3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        getContentPane().add(patient_age_field3, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 159, 172, -1));
-
         patient_sex_select.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         patient_sex_select.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Preffered not to say" }));
         getContentPane().add(patient_sex_select, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 200, 170, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\others_bg.jpg")); // NOI18N
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -60, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -128,18 +125,21 @@ public class data_update extends JFrame {
     }//GEN-LAST:event_closeActionPerformed
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String patientID=patient_id_field.getText();
-        try { java.sql.Connection con=sql.conn.getCon();
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hms070521", "root", "suvra");	
             java.sql.Statement st=con.createStatement();
+
             java.sql.ResultSet rs = st.executeQuery("select *from patient where patientID='"+patientID+"'");
             if(rs.next()){ patient_id_field.setEditable(false);
                 patient_id_field.setText(rs.getString(2));
                 patient_name_field.setText(rs.getString(2));
                 patient_contact_field.setText(rs.getString(3));
                 patient_sex_field.setText(rs.getString(4));
-                patient_id_field.setText(rs.getString(5));
+                patient_blood_group_field.setText(rs.getString(5));
                 patient_sex_select.setSelectedItem(rs.getString(5)); //patient_sex_field.setText(rs.getString(6));
                 patient_illness_field.setText(rs.getString(7));
-            }} catch (java.sql.SQLException e) {
+            }} catch (SQLException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null,"ID DOES NOT EXISTS !!");
         }
     }//GEN-LAST:event_searchActionPerformed
@@ -148,15 +148,19 @@ public class data_update extends JFrame {
         String patientNAME=patient_name_field.getText();
         String patientNO=patient_contact_field.getText();
         String patientAGE=patient_age_field.getText();
-        String patientSEX=patient_id_field.getText();
-        String patientBG=(String)patient_sex_select.getSelectedItem();
+        String patientSEX=(String)patient_sex_select.getSelectedItem();
+        String patientBG=patient_blood_group_field.getText();
         String majorDISEASE=patient_illness_field.getText();
-        try { java.sql.Connection con=sql.conn.getCon();
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hms070521", "root", "suvra");	
             java.sql.Statement st=con.createStatement();
+            //java.sql.Connection con=sql.conn.getCon();
+            //java.sql.Statement st=con.createStatement();
             st.executeUpdate("updste patient set name='"+patientNAME+"',contactNUMBER='"+patientNO+"',age='"+patientAGE+"',sex='"+patientSEX+"',bloodGROUP='"+patientBG+"',anyMajorDisease='"+majorDISEASE+"'");
             setVisible(false);
             new data_update().setVisible(true);
-        } catch(java.sql.SQLException e){
+        } catch(SQLException | ClassNotFoundException e){
             JOptionPane.showMessageDialog(null,"PLZ ENTER DATA IN CORRECT FORMAT");
         }
     }//GEN-LAST:event_updateActionPerformed
@@ -172,10 +176,9 @@ public class data_update extends JFrame {
         });}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel patient_age;
     private javax.swing.JTextField patient_age_field;
-    private javax.swing.JTextField patient_age_field2;
-    private javax.swing.JTextField patient_age_field3;
     private javax.swing.JLabel patient_blood_group;
     private javax.swing.JTextField patient_blood_group_field;
     private javax.swing.JLabel patient_contact;

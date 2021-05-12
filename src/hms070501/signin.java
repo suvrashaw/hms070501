@@ -85,6 +85,12 @@ public class signin extends JFrame {
             new signin().setVisible(true);
         });
     }
+    //"GENERAL TO ICU" MANAGEMENT
+    //BED AVAILABLE
+    //COVID ICU BED**
+    //DOCTOR AVAILIBILITY AT ADMIN LEVEL EACH DEPT
+    //USER AND ADMIN
+    //APPROXIMATE COST******
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
     private javax.swing.JPasswordField pass_field;

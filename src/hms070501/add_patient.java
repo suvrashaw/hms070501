@@ -1,4 +1,5 @@
 package hms070501;
+import java.sql.*;
 import javax.swing.*;
 public class add_patient extends JFrame {
     public add_patient() {
@@ -24,6 +25,7 @@ public class add_patient extends JFrame {
         patient_sex_select = new javax.swing.JComboBox<>();
         close = new javax.swing.JButton();
         add_patient_bg = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(280, 150));
@@ -99,9 +101,10 @@ public class add_patient extends JFrame {
             }
         });
         getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 340, -1, -1));
-
-        add_patient_bg.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\add new patient background.jpg")); // NOI18N
         getContentPane().add(add_patient_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -20, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\others_bg.jpg")); // NOI18N
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -60, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -110,17 +113,19 @@ public class add_patient extends JFrame {
         String patientNAME=patient_name_field.getText();
         String patientNO=patient_contact_field.getText();
         String patientAGE=patient_age_field.getText();
-        String patientSEX=patient_id_field.getText();
-        String patientBG=(String)patient_sex_select.getSelectedItem();
+        String patientSEX=(String)patient_sex_select.getSelectedItem();
+        String patientBG=patient_blood_group_field.getText();
         String majorDISEASE=patient_illness_field.getText();
-        try { java.sql.Connection con=sql.conn.getCon();
-            java.sql.Statement st=con.createStatement();
-            st.executeUpdate("Updste patient values('"+patientID+"','"+patientNAME+"','"+patientNO+"','"+patientAGE+"','"+patientSEX+"','"+patientBG+"','"+majorDISEASE+"')");
-            JOptionPane.showMessageDialog(null,"UPDATE");
+        try { 
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hms070521", "root", "suvra");	
+            Statement st=con.createStatement();
+            st.executeUpdate("insert into patient values('"+patientID+"','"+patientNAME+"','"+patientNO+"','"+patientAGE+"','"+patientSEX+"','"+patientBG+"','"+majorDISEASE+"')");
+            JOptionPane.showMessageDialog(null,"SUBMITTED !!");
             setVisible(false);
             new add_patient().setVisible(true);
-        } catch(java.sql.SQLException e) {
-            JOptionPane.showMessageDialog(null,"ENTER DATA IN CORRECT FORMAT");
+        } catch(SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null,"CONNECTION ERROR !!");
         }
     }//GEN-LAST:event_saveActionPerformed
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
@@ -139,6 +144,7 @@ public class add_patient extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_patient_bg;
     private javax.swing.JButton close;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel patient_age;
     private javax.swing.JTextField patient_age_field;
     private javax.swing.JLabel patient_blood_group;

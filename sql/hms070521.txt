@@ -1,0 +1,15 @@
+⁍ DB & Table creation →
+
+mysql> CREATE DATABASE hms070521;
+
+mysql> use hms070521;
+
+mysql> create table patient(patientID varchar(10)primary key,patientNAME varchar(25),patientNO varchar(10),patientAGE varchar(3),patientSEX varchar(25),patientBG varchar(3),majorDISEASE varchar(25));
+
+mysql> create table patientDATA(patientID varchar(10)primary key,SYMPToms varchar(100),DIAGnosis varchar(100),MEDicines varchar(100),Ward varchar(3),wardTYPE varchar(7));
+
+⁍ SQL Dump
+
+C:\Windows\system32>cd C:\Program Files\MySQL\MySQL Server 8.0\bin
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqldump -u root -p hms070521 > hms070521.sql

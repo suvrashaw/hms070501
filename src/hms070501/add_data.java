@@ -1,7 +1,7 @@
 package hms070501;
+import java.sql.*;
 import javax.swing.*;
 public class add_data extends JFrame {
-    public int flag=0;
     public add_data() {
         initComponents();
         ward_type.setVisible(false);
@@ -28,6 +28,7 @@ public class add_data extends JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         add_data_bg = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(280, 150));
@@ -141,31 +142,32 @@ public class add_data extends JFrame {
         jScrollPane1.setViewportView(table);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 649, 50));
-
-        add_data_bg.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\add new patient background.jpg")); // NOI18N
         getContentPane().add(add_data_bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -20, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\SUVRA\\Downloads\\images\\others_bg.jpg")); // NOI18N
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, -60, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        if (flag==1){ String patientID = patient_id_field.getText();
+            String patientID = patient_id_field.getText();
             String SYMPToms = symptoms_field.getText();
             String DIAGnosis = diagnosis_field.getText();
             String MEDicines = medicines_field.getText();
             String Ward=(String)ward_select.getSelectedItem();
             String wardTYPE = "";
-            if (ward_select.getSelectedItem()=="Yes")wardTYPE=(String)ward_type_select.getSelectedItem();
-            try { java.sql.Connection con=sql.conn.getCon();
+            if (ward_select.getSelectedItem()=="Yes") wardTYPE=(String)ward_type_select.getSelectedItem();
+            try { 
+                Class.forName("com.mysql.jdbc.Driver");
+                java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hms070521", "root", "suvra");	
                 java.sql.Statement st=con.createStatement();
-                st.executeQuery("Updste report values('"+patientID+"','"+SYMPToms+"','"+DIAGnosis+"','"+MEDicines+"','"+Ward+"','"+wardTYPE+"')");
-                JOptionPane.showMessageDialog(null,"UPDATE SUCCESSFUL !!");
+                st.executeUpdate("insert into patientDATA values('"+patientID+"','"+SYMPToms+"','"+DIAGnosis+"','"+MEDicines+"','"+Ward+"','"+wardTYPE+"')");
+                JOptionPane.showMessageDialog(null,"UPDATED !!");
                 setVisible(false);
                 new add_data().setVisible(true);
-            } catch(java.sql.SQLException e) {
+            } catch(SQLException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this,e);
-            }} else {
-            JOptionPane.showMessageDialog(null,"EMPTY PATIENT FIELD !!");
-        }
+            }
     }//GEN-LAST:event_saveActionPerformed
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
         setVisible(false);
@@ -181,16 +183,17 @@ public class add_data extends JFrame {
     }//GEN-LAST:event_ward_selectActionPerformed
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         String patientID = patient_id_field.getText();
-        try{ java.sql.Connection con=sql.conn.getCon();
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/hms070521", "root", "suvra");	
             java.sql.Statement st=con.createStatement();
             java.sql.ResultSet rs = st.executeQuery("select *from patient where patientID='"+patientID+"'");
             table.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
-            if(rs.first()) { //INVERSEIF
-                patient_id_field.setEditable(false);
-                flag = 1;
-            } else JOptionPane.showMessageDialog(null,"ID DOES NOT EXISTS !!");
-        } catch(java.sql.SQLException e){
-            JOptionPane.showMessageDialog(null,"CONNECTION ERROR !!");
+            if(!rs.first()) { //INVERSEIF
+                JOptionPane.showMessageDialog(null,"ID DOES NOT EXISTS !!");
+            } else patient_id_field.setEditable(false);
+        } catch(SQLException | ClassNotFoundException e){
+            System.out.println(e);
         }
     }//GEN-LAST:event_searchActionPerformed
     public static void main(String args[]) {
@@ -207,6 +210,7 @@ public class add_data extends JFrame {
     private javax.swing.JButton close;
     private javax.swing.JLabel diagnosis;
     private javax.swing.JTextField diagnosis_field;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel medicines;
     private javax.swing.JTextField medicines_field;
